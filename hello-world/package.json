@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "hello-world",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -22,17 +22,12 @@
     "email": "",
     "url": ""
   },
-  "contributors": [
-
-  ],
+  "contributors": [],
   "scripts": {
     "dev": "",
     "test": ""
   },
-  "dependencies": {
-
-  },
   "devDependencies": {
-
+    "nodemon": "^3.1.0"
   }
 }
