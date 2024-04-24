@@ -22,6 +22,7 @@ if (process.argv.length !== 5) {
 // Verificam daca primele 2 argumente sunt numere:
 if (!isNumber(primulNumar) || !isNumber(alDoileaNumar)) {
   console.error("Introduceti un numar!");
+  return;
 }
 // Verificam daca operatorul introdus este unul dintre "+", "-", "*", "/":
 if (!["+", "-", "*", "/"].includes(operator)) {
