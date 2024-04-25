@@ -1,32 +1,12 @@
 {
   "name": "conspect",
   "version": "1.0.0",
-  "description": "",
+  "description": "Readme",
   "main": "index.js",
-  "type": "module",
-  "license": "AGPL-version-3.0",
-  "private": false,
-  "engines": {
-    "node": ">= 14.0.0",
-    "npm": ">= 6.0.0"
-  },
-  "homepage": "",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "bugs": "",
-  "keywords": [],
-  "author": {
-    "name": "Dan Retegan",
-    "email": "danretegan@yahoo.com",
-    "url": ""
-  },
-  "contributors": [],
   "scripts": {
-    "dev": "",
-    "test": ""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "keywords": [],
+  "author": "Dan Retegan",
+  "license": "ISC"
 }
