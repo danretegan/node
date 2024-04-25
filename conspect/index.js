@@ -1,14 +1,12 @@
 const readline = require("readline");
-const fs = require("fs").promisses;
+const fs = require("fs").promises;
 const { program } = require("commander");
 require("colors");
-
 program.option(
   "-f, --file [type]",
   "file for saving game results",
   "results.txt"
 );
-
 program.parse(process.argv);
 
 const rl = readline.createInterface({
@@ -22,11 +20,11 @@ const mind = Math.floor(Math.random() * 10) + 1;
 
 const isValid = (value) => {
   if (isNaN(value)) {
-    console.log("Introduceti numarul!".red);
+    console.log("Introduceți numărul!".red);
     return false;
   }
   if (value < 1 || value > 10) {
-    console.log("Numarul trebuie sa fie in intervalul 1 - 10".red);
+    console.log("Numărul trebuie să fie în intervalul 1 - 10".red);
     return false;
   }
   return true;
@@ -36,16 +34,16 @@ const log = async (data) => {
   try {
     await fs.appendFile(logFile, `${data}\n`);
     console.log(
-      `S-a reusit salvarea rezultatulyui intr-un fisier! ${logFile}`.green
+      `S-a reușit salvarea rezultatului într-un fișier ${logFile}`.green
     );
   } catch (err) {
-    console.log(`Nu s-a putut salva fisierul ${logFile}`.red);
+    console.log(`Nu s-a putut salva fișierul ${logFile}`.red);
   }
 };
 
 const game = () => {
   rl.question(
-    "Introdu un numar de la 1 la 10 pentru a ghici raspunsul: ".yellow,
+    "Introdu un număr de la 1 la 10 pentru a ghici răspunsul: ".yellow,
     (value) => {
       let a = +value;
       if (!isValid(a)) {
@@ -54,13 +52,13 @@ const game = () => {
       }
       count += 1;
       if (a === mind) {
-        console.log("Felicitari, ai ghicit numarul in %d pasi".green, count);
+        console.log("Felicitări, ai ghicit numărul în %d pași)".green, count);
         log(
-          `${new Date().toLocaleDateString()}: Felicitari, ai ghicit numarul in ${count} pasi`
+          `${new Date().toLocaleDateString()}: Felicitări, ai ghicit numărul în ${count} pași`
         ).finally(() => rl.close());
         return;
       }
-      console.log("Nu ai ghicit, incearca din nou".red);
+      console.log("Nu ai ghicit, încearcă din nou".red);
       game();
     }
   );
