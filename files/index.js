@@ -2,7 +2,7 @@
 
 import { promises as fs } from "fs";
 
-const folderName = "notes";
+const folderName = "./";
 const filename = "log.csv";
 
 await logFilesInDirectory(folderName);
@@ -19,9 +19,9 @@ async function logFilesInDirectory() {
       fs.writeFile(filename, fileText);
       console.log("Fisierul a fost scris cu succes.");
     } catch (error) {
-      console.error(err);
+      console.error(error);
     }
   } catch (error) {
-    console.error(err);
+    console.error(error);
   }
 }
