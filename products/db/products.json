@@ -22,5 +22,11 @@
     "name": "xxx",
     "size": 55,
     "type": "yyy"
+  },
+  {
+    "id": "55c365b7-6bfe-46e9-9426-0607bc444a84",
+    "name": "Mango",
+    "type": "shoes",
+    "size": 46
   }
 ]
