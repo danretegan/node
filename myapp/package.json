@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Dan Retegan",
   "license": "ISC",
   "dependencies": {
-    "exprexx": "^1.0.0"
+    "express": "^4.19.2"
   }
 }
