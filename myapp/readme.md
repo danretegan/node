@@ -24,7 +24,7 @@ Această funcție nu face nimic, doar lasă să treacă fluxul prin ea, totuși 
 DEFINIȚIE:
 
 <p>
-Funcțiile middleware (middleware) sunt funcții care au acces la obiectul cererii (req), la obiectul răspuns (res) și la următoarea funcție middleware din ciclul "cerere-răspuns" al aplicației. Următoarea funcție middleware este de obicei indicată în variabila next.
+Funcțiile middleware (`middleware`) sunt funcții care au acces la obiectul cererii (`req`), la obiectul răspuns (`res`) și la următoarea funcție middleware din ciclul "cerere-răspuns" al aplicației. Următoarea funcție middleware este de obicei indicată în variabila `next`.
 </p>
 
 Funcțiile middleware îndeplinesc următoarele sarcini:
@@ -37,5 +37,5 @@ Funcțiile middleware îndeplinesc următoarele sarcini:
 IMPORTANT!
 
 <p>
-Dacă funcția middleware curentă nu finalizează ciclul "cerere-răspuns", trebuie să apeleze next() pentru a transfera controlul către următoarea funcție middleware. În caz contrar, cererea se va bloca.
+Dacă funcția `middleware` curentă nu finalizează ciclul "cerere-răspuns", trebuie să apeleze next() pentru a transfera controlul către următoarea funcție middleware. În caz contrar, cererea se va bloca.
 </p>
