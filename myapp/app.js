@@ -26,3 +26,19 @@ app.patch("/user/:userid", (req, res) => {
   const id = req.params.userid;
   // efectuează acțiunile necesare
 });
+
+//TODO Utilizarea parametrilor de solicitare GET:
+//? foloseste in browser: http://localhost:3000/contacts?skip=0&limit=10
+//* Ruta care acceptă parametri de interogare:
+app.get("/contacts", (req, res) => {
+  const { skip, limit } = req.query;
+  console.log(req.query);
+
+  //! Simulăm datele de contact:
+  const contacts = [];
+  for (let i = parseInt(skip); i < parseInt(skip) + parseInt(limit); i++) {
+    contacts.push(`Contact ${i}`);
+  }
+
+  res.json(contacts);
+});
