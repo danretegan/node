@@ -42,3 +42,39 @@ app.get("/contacts", (req, res) => {
 
   res.json(contacts);
 });
+
+//TODO Trimiterea datelor folosind formulare:
+//? foloseste in browser: http://localhost:3000/login
+
+// Middleware pentru a parsa datele trimise în formularul url-encoded:
+app.use(express.urlencoded({ extended: false }));
+
+// Pagina HTML cu formularul de autentificare:
+const loginForm = `
+  <form action="/login" method="POST">
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email" />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+    <button type="submit">Log In</button>
+  </form>
+`;
+
+// Ruta pentru afișarea formularului de autentificare:
+app.get("/login", (req, res) => {
+  res.send(loginForm);
+});
+
+// Handler pentru ruta POST /login care primește datele formularului:
+app.post("/login", (req, res) => {
+  // Extragem email-ul și parola din obiectul req.body:
+  const { email, password } = req.body;
+  // Efectuăm operațiile necesare...
+  // Afișăm datele primite în consolă
+  console.log(req.body);
+  console.log("Email:", email);
+  console.log("Password:", password);
+
+  // Redirecționăm către o altă pagină sau afișăm un mesaj de succes:
+  res.send("Autentificare reușită!");
+});
