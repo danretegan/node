@@ -44,14 +44,14 @@ app.get("/contacts", (req, res) => {
 });
 
 //TODO Trimiterea datelor folosind formulare:
-//? foloseste in browser: http://localhost:3000/login
+//? foloseste in browser: http://localhost:3000/login-form
 
 // Middleware pentru a parsa datele trimise în formularul url-encoded:
 app.use(express.urlencoded({ extended: false }));
 
 // Pagina HTML cu formularul de autentificare:
 const loginForm = `
-  <form action="/login" method="POST">
+  <form action="/login-form" method="POST">
     <label for="email">Email</label>
     <input type="text" name="email" id="email" />
     <label for="password">Password</label>
@@ -61,12 +61,12 @@ const loginForm = `
 `;
 
 // Ruta pentru afișarea formularului de autentificare:
-app.get("/login", (req, res) => {
+app.get("/login-form", (req, res) => {
   res.send(loginForm);
 });
 
 // Handler pentru ruta POST /login care primește datele formularului:
-app.post("/login", (req, res) => {
+app.post("/login-form", (req, res) => {
   // Extragem email-ul și parola din obiectul req.body:
   const { email, password } = req.body;
   // Efectuăm operațiile necesare...
@@ -76,15 +76,31 @@ app.post("/login", (req, res) => {
   console.log("Password:", password);
 
   // Redirecționăm către o altă pagină sau afișăm un mesaj de succes:
-  res.send("Autentificare reușită!");
+  res.send("Autentificare form reușită!");
 });
 
 //TODO Transmiterea de JSON:
-// Parser-ul JSON în aplicație este conectat astfel:
+//? foloseste in browser: http://localhost:3000/login-form
+
+// Middleware pentru a parsa datele JSON trimise în cereri:
 app.use(express.json());
 
-app.post("/login", (req, res, next) => {
-  const { email, password } = req.body;
-  // Efectuăm operațiile necesare
+app.get("/login-json", (req, res) => {
+  res.send("GET request to /login-json");
 });
+
+// Handler pentru ruta POST /login-json care primește datele în format JSON:
+app.post("/login-json", (req, res) => {
+  // Extragem email-ul și parola din obiectul req.body:
+  const { email, password } = req.body;
+  // Efectuăm operațiile necesare...
+  // Afișăm datele primite în consolă
+  console.log(req.body);
+  console.log("Email:", email);
+  console.log("Password:", password);
+
+  // Redirecționăm către o altă pagină sau afișăm un mesaj de succes:
+  res.send("Autentificare json reușită!");
+});
+
 // !cel mai important, antetul Content-Type al cererii trebuie să conțină application/json.
