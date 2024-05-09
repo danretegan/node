@@ -10,10 +10,10 @@ app.get("/contact", (req, res) => {
 });
 
 app.use((req, res, next) => {
-  console.log("Middleware-ul nostru");
+  console.log("\x1b[34mMiddleware-ul nostru\x1b[0m"); //text cu albastru
   next();
 });
 
 app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
+  console.log("\x1b[31mExample app listening on port 3000!\x1b[0m"); //text cu rosu
 });
