@@ -78,3 +78,13 @@ app.post("/login", (req, res) => {
   // Redirecționăm către o altă pagină sau afișăm un mesaj de succes:
   res.send("Autentificare reușită!");
 });
+
+//TODO Transmiterea de JSON:
+// Parser-ul JSON în aplicație este conectat astfel:
+app.use(express.json());
+
+app.post("/login", (req, res, next) => {
+  const { email, password } = req.body;
+  // Efectuăm operațiile necesare
+});
+// !cel mai important, antetul Content-Type al cererii trebuie să conțină application/json.
