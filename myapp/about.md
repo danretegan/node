@@ -6,6 +6,8 @@ $ node app.js
 
 aplicația va porni un server și va asculta toate conexiunile de pe portul 3000. ([http://localhost:3000](http://localhost:3000/contact))
 
+Pentru a porni serverul, se apelează metoda `app.listen()` căruia i se transmite numărul portului.
+
 Aplicația va răspunde cu “Hello World!” în browser pentru toate cererile adresate la URL (/).
 
 Pentru toate celelalte căi, răspunsul va fi 404 - Not Found. Pentru a gestiona cereri și rute, Express are o serie de funcții încorporate. Routing-ul determină modul în care aplicația va răspunde la o solicitare a clientului spre o anumită adresă URL. Fiecare rută poate avea una sau mai multe funcții de procesare care sunt executate atunci când este accesată.
