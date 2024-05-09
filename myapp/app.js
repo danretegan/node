@@ -5,6 +5,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+//TODO Transmiterea unui parametru la o adresă URL(:id):
 app.get("/contact/:id", (req, res) => {
   res.send(`<h1>Contact page</h1> Am introdus parametrul: ${req.params.id}`);
 });
@@ -20,6 +21,7 @@ app.listen(3000, () => {
   console.log("\x1b[31mExample app listening on port 3000!\x1b[0m"); //text cu rosu
 });
 
+//TODO editarea datelor pentru un utilizator ar putea arăta astfel:
 app.patch("/user/:userid", (req, res) => {
   const id = req.params.userid;
   // efectuează acțiunile necesare
