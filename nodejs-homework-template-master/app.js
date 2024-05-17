@@ -2,10 +2,13 @@ import express from "express";
 import logger from "morgan";
 import cors from "cors";
 import productsRouter from "./routes/api/products.js";
+import connectToDb from "./utils/connectToDb.js";
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+
+connectToDb();
 
 app.use(logger(formatsLogger));
 app.use(cors());
