@@ -1,5 +1,5 @@
 // import (promises as fs) from fs;
-import products from "./products.json";
+import products from "./products.json" assert { type: "json" };
 import { v4 as uuidv4 } from "uuid";
 
 const ProductsService = {
