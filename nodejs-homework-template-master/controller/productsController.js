@@ -6,7 +6,7 @@ import Product from "../models/products.js";
 const ProductsController = {
   listProducts,
      getProductsById,
-  //   addProduct,
+     addProduct,
   //   updateProduct,
   //   updateProductPartial,
 };
@@ -30,15 +30,11 @@ async function listProducts() {
   }
 }
 
-// async function addProduct(product) {
-//   const preparedProduct = {
-//     id: uuidv4(),
-//     ...product,
-//   };
 
-//   products.push(preparedProduct);
-// Adaugare scriere in fisier
-// }
+//! ADD (CREATE) PRODUCT:
+ async function addProduct(product) {
+   return Product.create(product)
+ }
 
 // async function updateProduct(updatedProduct, productId) {
 //   if (!products.find((product) => product.id === productId)) {

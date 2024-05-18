@@ -38,19 +38,19 @@ router.get("/:id", async (req, res, next) => {
 
 /* POST localhost:3000/api/products/ */
 router.post("/", async (req, res, next) => {
-  //   try {
-  //     const isValid = checkIsProductValid(req.body);
-  //     if (!isValid) {
-  //       throw new Error("Produsul introdus nu are toate campurile necesare.");
-  //     }
-  //     const product = req.body;
-  //     await ProductsService.addProduct(product);
-  //     res
-  //       .status(201)
-  //       .json({ message: `Produsul ${product.name} a fost adaugat cu succes.` });
-  //   } catch (error) {
-  //     respondWithError(res, error);
-  //   }
+     try {
+       const isValid = checkIsProductValid(req.body);
+       if (!isValid) {
+         throw new Error("Produsul introdus nu are toate campurile necesare.");
+       }
+       const product = req.body;
+       await ProductsController.addProduct(product);
+       res
+         .status(201)
+         .json({ message: `Produsul ${product.name} a fost adaugat cu succes.` });
+     } catch (error) {
+       respondWithError(res, error);
+     }
 });
 
 /* DELETE localhost:3000/api/products/:id */
