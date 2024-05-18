@@ -5,7 +5,7 @@ import Product from "../models/products.js";
 
 const ProductsController = {
   listProducts,
-  //   getProductsById,
+     getProductsById,
   //   addProduct,
   //   updateProduct,
   //   updateProductPartial,
@@ -20,9 +20,15 @@ async function listProducts() {
   }
 }
 
-// async function getProductsById(id) {
-//   return products.find((el) => el.id === id);
-// }
+ async function getProductsById(id) {
+  console.log(`--- List Product by id: ${id}---`.bgYellow.italic.bold);
+  
+  try {
+    return await Product.findById(id);
+  } catch (error) {
+  consolole.error("error");
+  }
+}
 
 // async function addProduct(product) {
 //   const preparedProduct = {

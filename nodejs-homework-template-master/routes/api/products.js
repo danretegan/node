@@ -23,17 +23,17 @@ router.get("/", async (req, res, next) => {
 
 /* GET localhost:3000/api/products/:id */
 router.get("/:id", async (req, res, next) => {
-  //   try {
-  //     const product = await ProductsService.getProductsById(req.params.id);
-  //     if (!product) {
-  //       throw new Error("Produsul nu a fost gasit");
-  //     }
-  //     res
-  //       .status(STATUS_CODES.success)
-  //       .json({ message: "Produsul a fost returnat cu succes", data: product });
-  //   } catch (error) {
-  //     respondWithError(res, error);
-  //   }
+     try {
+       const product = await ProductsController.getProductsById(req.params.id);
+       if (!product) {
+         throw new Error("Produsul nu a fost gasit");
+       }
+       res
+         .status(STATUS_CODES.success)
+         .json({ message: "Produsul a fost returnat cu succes", data: product });
+     } catch (error) {
+      respondWithError(res, error);
+     }
 });
 
 /* POST localhost:3000/api/products/ */
