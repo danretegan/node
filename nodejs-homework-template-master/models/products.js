@@ -1,67 +1,35 @@
-// import (promises as fs) from fs;
-import products from "./products.json" assert { type: "json" };
-import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
+const { Schema, model } = mongoose;
 
-const ProductsService = {
-  listProducts,
-  getProductsById,
-  addProduct,
-  updateProduct,
-  updateProductPartial,
-};
+/* //!Numele Modelul -> Colectia cu litera mica si la plural:
+Product -> products,
+User    -> users,
+Task    -> tasks
+*/
 
-async function listProducts() {
-  return products;
-}
+const schema = new Schema(
+  {
+    name: {
+      type: String,
+      minlength: 3,
+      maxlength: 30,
+      required: [true, "Numele este obligatoriu."],
+    },
+    size: {
+      type: Number,
+      min: 32,
+      max: 52,
+      comment: "Marimile sunt numere.",
+    },
+    type: {
+      type: String,
+      enum: ["tshirt", "shoe", "snickers"],
+    },
+  },
+  //! Pot sa specific eu, daca vreau, in mod direct, numele colectiei de care o sa fie legat modelul:
+  { collection: "products" } //! camp optional, daca numele colectiei difera!
+);
 
-async function getProductsById(id) {
-  return products.find((el) => el.id === id);
-}
+const Product = model("Product", schema);
 
-async function addProduct(product) {
-  const preparedProduct = {
-    id: uuidv4(),
-    ...product,
-  };
-
-  products.push(preparedProduct);
-  // Adaugare scriere in fisier
-}
-
-async function updateProduct(updatedProduct, productId) {
-  if (!products.find((product) => product.id === productId)) {
-    throw new Error("Produsul nu a fost gasit.");
-  }
-
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].id === productId) {
-      products[i] = { ...updatedProduct, productId };
-      break;
-    }
-  }
-
-  // TODO: Adaugare scriere in fisier
-}
-
-async function updateProductPartial(partialProduct, productId) {
-  if (!products.find((product) => product.id === productId)) {
-    throw new Error("Produsul nu a fost gasit.");
-  }
-
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].id === productId) {
-      products[i] = { ...products[i], ...partialProduct };
-      break;
-    }
-  }
-}
-
-// const getContactById = async (contactId) => {};
-
-// const removeContact = async (contactId) => {};
-
-// const addContact = async (body) => {};
-
-// const updateContact = async (contactId, body) => {};
-
-export default ProductsService;
+export default Product;
