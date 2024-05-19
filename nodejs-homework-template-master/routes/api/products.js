@@ -1,5 +1,4 @@
 import express from "express";
-
 import ProductsController from "../../controller/productsController.js";
 
 const router = express.Router();
@@ -13,6 +12,7 @@ const STATUS_CODES = {
 router.get("/", async (req, res, next) => {
   try {
     const products = await ProductsController.listProducts();
+    
     res
       .status(STATUS_CODES.success)
       .json({ message: "Lista a fost returnata cu succes", data: products });
@@ -20,6 +20,8 @@ router.get("/", async (req, res, next) => {
     respondWithError(res, error);
   }
 });
+
+
 
 /* GET localhost:3000/api/products/:id */
 router.get("/:id", async (req, res, next) => {
@@ -55,10 +57,20 @@ router.post("/", async (req, res, next) => {
 
 /* DELETE localhost:3000/api/products/:id */
 router.delete("/:id", async (req, res, next) => {
-  //   res.json({ message: "template message" });
-  // });
+  try {
+    await ProductsController.deleteProduct(req.params.id);
+
+    res
+      .status(STATUS_CODES.deleted)
+      .json({ message: "Produsul a fost sters cu succes" });
+  } catch (error) {
+    respondWithError(res, error);
+  }
+});
+
+  
   /* PUT localhost:3000/api/products/:id */
-  // router.put("/:id", async (req, res, next) => {
+  router.put("/:id", async (req, res, next) => {
   //   try {
   //     const isValid = checkIsProductValid(req.body);
   //     if (!isValid) {
