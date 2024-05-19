@@ -5,10 +5,11 @@ import Product from "../models/products.js";
 
 const ProductsController = {
   listProducts,
-     getProductsById,
-     addProduct,
+  getProductsById,
+  addProduct,
   //   updateProduct,
   //   updateProductPartial,
+  deleteProduct,
 };
 
 async function listProducts() {
@@ -16,7 +17,7 @@ async function listProducts() {
   try {
     return await Product.find();
   } catch (error) {
-    consolole.error("error");
+    console.error("error");
   }
 }
 
@@ -26,14 +27,23 @@ async function listProducts() {
   try {
     return await Product.findById(id);
   } catch (error) {
-  consolole.error("error");
+  console.error("error");
   }
 }
 
 
+
 //! ADD (CREATE) PRODUCT:
  async function addProduct(product) {
-   return Product.create(product)
+   return Product.create(product);
+ }
+
+ //! DELETE Product:
+
+ async function deleteProduct(id) {
+
+  console.log(`--- Deleted Product by id: ${id}---`.bgYellow.italic.bold);
+  return Product.findByIdAndDelete(id);
  }
 
 // async function updateProduct(updatedProduct, productId) {
