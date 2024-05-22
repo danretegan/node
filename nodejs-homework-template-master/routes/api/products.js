@@ -1,18 +1,30 @@
 import express from "express";
 import ProductsController from "../../controller/productsController.js";
+import { STATUS_CODES } from "../../utils/constants.js";
+import AuthController from "../../controller/authController.js";
 
 const router = express.Router();
-const STATUS_CODES = {
-  success: 200,
-  deleted: 204,
-  error: 500,
-};
 
 /* GET localhost:3000/api/products */
 router.get("/", async (req, res, next) => {
   try {
+    // In Postman, GET, Autorization, Bearer Token, introduc un 'testing' si obtin in consola numele exact al autorizarii din header (authorization):
+    console.log(JSON.stringify(req.headers));
+    const header = req.get("authorization");
+    if (!header) {
+      throw new Error("E nevoie de autentificare pentru acesta ruta!");
+    }
+    // header-ul este compus din cuvantul Bearer + token deci extrag token-ul:
+    const token = header.split(" ")[1];
+
+    const isAuthenticated = AuthController.validateJWT(token);
+
+    if (!isAuthenticated) {
+      throw new Error("Nu aveti permisiuni pentru a vedea lista de produse!");
+    }
+
     const products = await ProductsController.listProducts();
-    
+
     res
       .status(STATUS_CODES.success)
       .json({ message: "Lista a fost returnata cu succes", data: products });
@@ -21,38 +33,36 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
-
 /* GET localhost:3000/api/products/:id */
 router.get("/:id", async (req, res, next) => {
-     try {
-       const product = await ProductsController.getProductsById(req.params.id);
-       if (!product) {
-         throw new Error("Produsul nu a fost gasit");
-       }
-       res
-         .status(STATUS_CODES.success)
-         .json({ message: "Produsul a fost returnat cu succes", data: product });
-     } catch (error) {
-      respondWithError(res, error);
-     }
+  try {
+    const product = await ProductsController.getProductsById(req.params.id);
+    if (!product) {
+      throw new Error("Produsul nu a fost gasit");
+    }
+    res
+      .status(STATUS_CODES.success)
+      .json({ message: "Produsul a fost returnat cu succes", data: product });
+  } catch (error) {
+    respondWithError(res, error);
+  }
 });
 
 /* POST localhost:3000/api/products/ */
 router.post("/", async (req, res, next) => {
-     try {
-       const isValid = checkIsProductValid(req.body);
-       if (!isValid) {
-         throw new Error("Produsul introdus nu are toate campurile necesare.");
-       }
-       const product = req.body;
-       await ProductsController.addProduct(product);
-       res
-         .status(201)
-         .json({ message: `Produsul ${product.name} a fost adaugat cu succes.` });
-     } catch (error) {
-       respondWithError(res, error);
-     }
+  try {
+    const isValid = checkIsProductValid(req.body);
+    if (!isValid) {
+      throw new Error("Produsul introdus nu are toate campurile necesare.");
+    }
+    const product = req.body;
+    await ProductsController.addProduct(product);
+    res
+      .status(201)
+      .json({ message: `Produsul ${product.name} a fost adaugat cu succes.` });
+  } catch (error) {
+    respondWithError(res, error);
+  }
 });
 
 /* DELETE localhost:3000/api/products/:id */
@@ -68,9 +78,8 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-  
-  /* PUT localhost:3000/api/products/:id */
-  router.put("/:id", async (req, res, next) => {
+/* PUT localhost:3000/api/products/:id */
+router.put("/:id", async (req, res, next) => {
   //   try {
   //     const isValid = checkIsProductValid(req.body);
   //     if (!isValid) {
