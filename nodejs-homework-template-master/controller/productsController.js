@@ -21,30 +21,27 @@ async function listProducts() {
   }
 }
 
- async function getProductsById(id) {
+async function getProductsById(id) {
   console.log(`--- List Product by id: ${id}---`.bgYellow.italic.bold);
-  
+
   try {
     return await Product.findById(id);
   } catch (error) {
-  console.error("error");
+    console.error("error");
   }
 }
 
-
-
 //! ADD (CREATE) PRODUCT:
- async function addProduct(product) {
-   return Product.create(product);
- }
+async function addProduct(product) {
+  return Product.create(product);
+}
 
- //! DELETE Product:
+//! DELETE Product:
 
- async function deleteProduct(id) {
-
+async function deleteProduct(id) {
   console.log(`--- Deleted Product by id: ${id}---`.bgYellow.italic.bold);
   return Product.findByIdAndDelete(id);
- }
+}
 
 // async function updateProduct(updatedProduct, productId) {
 //   if (!products.find((product) => product.id === productId)) {
