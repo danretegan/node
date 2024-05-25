@@ -1,13 +1,16 @@
 import colors from "colors";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import bcrypt from "bcrypt";
+import User from "../models/user.js";
 
 const AuthController = {
   login,
+  signup,
   validateJWT,
 };
 
-const secretFromToken = process.env.TOKEN_SECRET;
+const secretForToken = process.env.TOKEN_SECRET;
 
 async function login() {
   console.log(colors.bgYellow.italic.bold("--- Login: ---"));
@@ -32,20 +35,37 @@ async function login() {
     {
       data: MOCK_USER_DATA,
     },
-    secretFromToken,
+    secretForToken,
     { expiresIn: "1h" }
   );
 
   return token;
 }
 
+async function signup(data) {
+  console.log(colors.bgYellow.italic.bold("--- Signup: ---"));
+
+  //! criptam parola inainte de a o trimite in baza de date!
+  const saltRounds = 10;
+  const encryptedPassword = await bcrypt.hash(data.password, saltRounds);
+
+  const newUser = new User({
+    email: data.email,
+    password: encryptedPassword,
+    role: "buyer",
+    token: null,
+  });
+
+  return User.create(newUser);
+}
+
 // TODO functia de verificare token, jwt.verify();
-function validateJWT(token) {
+export function validateJWT(token) {
   try {
     let isAuthenticated = false;
 
     // invalid token - synchronous
-    jwt.verify(token, secretFromToken, (err, _decoded) => {
+    jwt.verify(token, secretForToken, (err, _decoded) => {
       if (err) {
         throw new Error(err);
       }

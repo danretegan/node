@@ -1,14 +1,15 @@
 import express from "express";
 import AuthController from "../../controller/authController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
-import colors from "colors";
+import User from "../../models/user.js";
 
 const router = express.Router();
 
-/* POST localhost:3000/api/auth/login/ */
+//TODO LOGIN:
+//! POST localhost:3000/api/auth/login/
 router.post("/login", async (req, res, next) => {
   try {
-    const isValid = checkLoginData(req.body);
+    const isValid = checkLoginPayload(req.body);
     if (!isValid) {
       throw new Error("The login request is invalid.");
     }
@@ -27,12 +28,48 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+//TODO SIGNUP:
+//! POST localhost:3000/api/auth/signup/
+router.post("/signup", async (req, res, next) => {
+  try {
+    const isValid = checkSignupPayload(req.body);
+
+    if (!isValid) {
+      return res.status(400).json({
+        status: "error",
+        code: 400,
+        message: "Incorrect email or password",
+        data: "Bad request",
+      });
+    }
+
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res.status(409).json({
+        status: "error",
+        code: 409,
+        message: "Email is already in use",
+        data: "Conflict",
+      });
+    }
+
+    await AuthController.signup({ email, password });
+
+    res.status(201).json({ message: "Utilizatorul a fost creat" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 export default router;
 
 /**
- * Validate Product Body
+ //TODO LOGIN:
+ //! Validate Product Body (Login):
  */
-function checkLoginData(data) {
+function checkLoginPayload(data) {
   if (!data?.username || !data?.password) {
     return false;
   }
@@ -41,7 +78,24 @@ function checkLoginData(data) {
 }
 
 /**
- * Handles Error Cases
+ //TODO SIGNUP:
+ //! Validate Product Body:
+ */
+function checkSignupPayload(data) {
+  if (!data?.email || !data?.password) {
+    return false;
+  }
+
+  //TODO introducem ce alte conditii dorim, de ex ca parola sa aiba minim 8 caractere:
+  if (data?.password < 8) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ //! Handles Error Cases:
  */
 function respondWithError(res, error) {
   console.error(error);
