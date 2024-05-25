@@ -95,6 +95,33 @@ router.get("/logout", AuthController.validateAuth, async (req, res, next) => {
   }
 });
 
+router.get(
+  "/user/current",
+  AuthController.validateAuth,
+  async (req, res, next) => {
+    try {
+      const header = req.get("authorization");
+      if (!header) {
+        throw new Error("E nevoie de autentificare pentru aceasta ruta.");
+      }
+      console.log(colors.bgYellow.italic.bold("--- /user/current: ---"));
+      const token = header.split(" ")[1];
+      const payload = AuthController.getPayloadFromJWT(token);
+
+      const user = await User.findOne({
+        email: payload.data.email,
+      });
+
+      res.status(STATUS_CODES.success).json({
+        email: user.email,
+        role: user.role,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+);
+
 export default router;
 
 /**
