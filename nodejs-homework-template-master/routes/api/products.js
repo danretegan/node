@@ -1,28 +1,16 @@
 import express from "express";
 import ProductsController from "../../controller/productsController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
+import "../../passport.js";
 import AuthController from "../../controller/authController.js";
 
 const router = express.Router();
 
-/* GET localhost:3000/api/products */
-router.get("/", async (req, res, next) => {
+//TODO GET localhost:3000/api/products */
+//TODO Refactorizare pentru a obtine lista de produse doar daca suntem autorizati:
+
+router.get("/", AuthController.validateAuth, async (req, res, next) => {
   try {
-    // In Postman, GET, Autorization, Bearer Token, introduc un 'testing' si obtin in consola numele exact al autorizarii din header (authorization):
-    console.log(JSON.stringify(req.headers));
-    const header = req.get("authorization");
-    if (!header) {
-      throw new Error("E nevoie de autentificare pentru acesta ruta!");
-    }
-    // header-ul este compus din cuvantul Bearer + token deci extrag token-ul:
-    const token = header.split(" ")[1];
-
-    const isAuthenticated = AuthController.validateJWT(token);
-
-    if (!isAuthenticated) {
-      throw new Error("Nu aveti permisiuni pentru a vedea lista de produse!");
-    }
-
     const products = await ProductsController.listProducts();
 
     res

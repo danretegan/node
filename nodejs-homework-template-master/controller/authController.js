@@ -8,7 +8,7 @@ import passport from "passport";
 const AuthController = {
   login,
   signup,
-  validateJWT,
+  validateAuth,
 };
 
 const secretForToken = process.env.TOKEN_SECRET;
