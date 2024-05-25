@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 import bcrypt from "bcrypt";
 import User from "../models/user.js";
+import passport from "passport";
 
 const AuthController = {
   login,
@@ -78,6 +79,21 @@ export function validateJWT(token) {
   } catch (err) {
     console.error(err);
   }
+}
+
+export function validateAuth(req, res, next) {
+  passport.authenticate("jwt", { session: false }, (err, user) => {
+    if (!user || err) {
+      return res.status(401).json({
+        status: "error",
+        code: 401,
+        message: "Unauthorized",
+        data: "Unauthorized",
+      });
+    }
+    req.user = user;
+    next();
+  })(req, res, next);
 }
 
 export default AuthController;
