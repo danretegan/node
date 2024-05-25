@@ -7,6 +7,7 @@ const router = express.Router();
 
 //TODO LOGIN:
 //! POST localhost:3000/api/auth/login/
+//TODO Modificam login-ul sa verifice daca ceea ce introduce utilizatorul la logare corespunde cu cee ce este in baza de date:
 router.post("/login", async (req, res, next) => {
   try {
     const isValid = checkLoginPayload(req.body);
@@ -14,17 +15,27 @@ router.post("/login", async (req, res, next) => {
       throw new Error("The login request is invalid.");
     }
 
-    const data = req.body;
-    const token = await AuthController.login(data);
+    const { email, password } = req.body;
 
-    console.dir("token: " + token);
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        status: "error",
+        code: 401,
+        message: "Username or password is not correct",
+        data: "Conflict",
+      });
+    }
+
+    const token = await AuthController.login({ email, password });
 
     res.status(STATUS_CODES.success).json({
       message: "Utilizatorul a fost logat cu succes!",
       token: token,
     });
   } catch (error) {
-    respondWithError(res, error);
+    respondWithError(res, error, STATUS_CODES.error);
   }
 });
 
@@ -70,7 +81,7 @@ export default router;
  //! Validate Product Body (Login):
  */
 function checkLoginPayload(data) {
-  if (!data?.username || !data?.password) {
+  if (!data?.email || !data?.password) {
     return false;
   }
 
