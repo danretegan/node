@@ -2,6 +2,7 @@ import express from "express";
 import AuthController from "../../controller/authController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
 import User from "../../models/user.js";
+import colors from "colors";
 
 const router = express.Router();
 
@@ -69,6 +70,26 @@ router.post("/signup", async (req, res, next) => {
     await AuthController.signup({ email, password });
 
     res.status(201).json({ message: "Utilizatorul a fost creat" });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+router.get("/logout", AuthController.validateAuth, async (req, res, next) => {
+  try {
+    const header = req.get("authorization");
+    if (!header) {
+      throw new Error("E nevoie de autentificare pentru aceasta ruta.");
+    }
+    console.log(colors.bgYellow.italic.bold("--- Logout! ---"));
+    const token = header.split(" ")[1];
+    const payload = AuthController.getPayloadFromJWT(token);
+
+    const filter = { email: payload.data.email };
+    const update = { token: null };
+    await User.findOneAndUpdate(filter, update);
+
+    res.status(204).send();
   } catch (error) {
     throw new Error(error);
   }
