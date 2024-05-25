@@ -12,36 +12,32 @@ const AuthController = {
 
 const secretForToken = process.env.TOKEN_SECRET;
 
-async function login() {
+//TODO Modificam login-ul sa verifice daca ceea ce introduce utilizatorul la logare corespunde cu cee ce este in baza de date:
+async function login(data) {
   console.log(colors.bgYellow.italic.bold("--- Login: ---"));
 
-  // TODO Create collection in MongoDB for users + schema
-  // TODO User is valid:
+  const { email, password } = data;
 
-  const MOCK_USER_DATA = {
-    username: "danretegan",
-    name: "Dan Retegan",
-    avatar: '<img src="" alt="test"/>',
-  };
+  const user = await User.findOne({ email });
 
-  const isValid = true;
+  const isMatching = await bcrypt.compare(password, user.password);
 
-  if (!isValid) {
-    throw new Error("The username or passsword entered is not correct.");
+  if (isMatching) {
+    const token = jwt.sign(
+      {
+        data: user,
+      },
+      secretForToken,
+      { expiresIn: "1h" }
+    );
+
+    return token;
+  } else {
+    throw new Error("Username is not matching!");
   }
-
-  // TODO functia de creare token, jwt.sign();
-  const token = jwt.sign(
-    {
-      data: MOCK_USER_DATA,
-    },
-    secretForToken,
-    { expiresIn: "1h" }
-  );
-
-  return token;
 }
 
+//TODO SIGNUP:
 async function signup(data) {
   console.log(colors.bgYellow.italic.bold("--- Signup: ---"));
 
