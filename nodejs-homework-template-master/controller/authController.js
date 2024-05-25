@@ -9,6 +9,7 @@ const AuthController = {
   login,
   signup,
   validateAuth,
+  getPayloadFromJWT,
 };
 
 const secretForToken = process.env.TOKEN_SECRET;
@@ -76,6 +77,16 @@ export function validateJWT(token) {
     });
 
     return isAuthenticated;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function getPayloadFromJWT(token) {
+  try {
+    const payload = jwt.verify(token, secretForToken);
+
+    return payload;
   } catch (err) {
     console.error(err);
   }
