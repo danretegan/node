@@ -31,6 +31,11 @@ async function login(data) {
       { expiresIn: "1h" }
     );
 
+    //TODO Actualizam tokenul in baza de date:
+    const filter = { email: email };
+    const update = { token: token };
+    await User.findOneAndUpdate(filter, update);
+
     return token;
   } else {
     throw new Error("Username is not matching!");
