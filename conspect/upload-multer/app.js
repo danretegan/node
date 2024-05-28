@@ -35,11 +35,11 @@ app.post("/upload", upload.single("picture"), async (req, res, next) => {
     await fs.unlink(temporaryName);
     return next(err);
   }
-  res.json({
-    description,
-    message: "File successfully uploaded!",
-    status: 200,
-  });
+  //! Răspuns cu un mesaj de succes și un link către pagina de încărcare:
+  res.send(`
+    <h2>File successfully uploaded!</h2>
+    <a href="/upload.html">Încarcă alt fișier</a>
+  `);
 });
 
 // catch 404 and forward to error handler
