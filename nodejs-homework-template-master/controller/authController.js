@@ -4,6 +4,7 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import User from "../models/user.js";
 import passport from "passport";
+import gravatar from "gravatar";
 
 const AuthController = {
   login,
@@ -14,7 +15,6 @@ const AuthController = {
 
 const secretForToken = process.env.TOKEN_SECRET;
 
-//TODO Modificam login-ul sa verifice daca ceea ce introduce utilizatorul la logare corespunde cu cee ce este in baza de date:
 async function login(data) {
   console.log(colors.bgYellow.italic.bold("--- Login: ---"));
 
@@ -48,15 +48,20 @@ async function login(data) {
 async function signup(data) {
   console.log(colors.bgYellow.italic.bold("--- Signup: ---"));
 
-  //! criptam parola inainte de a o trimite in baza de date!
   const saltRounds = 10;
   const encryptedPassword = await bcrypt.hash(data.password, saltRounds);
+
+  //! Setez noua proprietate AVATAR:
+  const userAvatar = gravatar.url(data.email);
 
   const newUser = new User({
     email: data.email,
     password: encryptedPassword,
     role: "buyer",
     token: null,
+
+    //! Adaug si setez URL-ul avatarului la valoarea generată:
+    avatarURL: userAvatar,
   });
 
   return User.create(newUser);

@@ -11,6 +11,9 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 connectToDb();
 
+// TODO Configurăm framework-ul Express pentru a distribui fișierele statice din folderul public:
+app.use(express.static("public"));
+
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
