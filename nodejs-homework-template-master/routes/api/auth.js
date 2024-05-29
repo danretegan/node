@@ -96,7 +96,7 @@ router.get("/logout", AuthController.validateAuth, async (req, res, next) => {
 });
 
 router.get(
-  "/user/current",
+  "/users/current",
   AuthController.validateAuth,
   async (req, res, next) => {
     try {
