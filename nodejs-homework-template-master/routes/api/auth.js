@@ -71,10 +71,12 @@ router.post("/signup", async (req, res, next) => {
 
     res.status(201).json({ message: "Utilizatorul a fost creat" });
   } catch (error) {
-    throw new Error(error);
+    respondWithError(res, error, STATUS_CODES.error);
   }
 });
 
+//TODO LOGOUT:
+//! POST localhost:3000/api/auth/logout/
 router.get("/logout", AuthController.validateAuth, async (req, res, next) => {
   try {
     const header = req.get("authorization");
@@ -91,10 +93,12 @@ router.get("/logout", AuthController.validateAuth, async (req, res, next) => {
 
     res.status(204).send();
   } catch (error) {
-    throw new Error(error);
+    respondWithError(res, error, STATUS_CODES.error);
   }
 });
 
+//TODO USERS/CURRENT:
+//! POST localhost:3000/api/auth/users/current/
 router.get(
   "/users/current",
   AuthController.validateAuth,
@@ -117,7 +121,22 @@ router.get(
         role: user.role,
       });
     } catch (error) {
-      throw new Error(error);
+      respondWithError(res, error, STATUS_CODES.error);
+    }
+  }
+);
+
+//TODO AVATAR:
+//! POST localhost:3000/api/auth/avatar/
+router.patch(
+  "/avatar",
+  [AuthController.validateAuth, FileController.uploadFile],
+  async (req, res) => {
+    try {
+      const response = await FileController.processAvatar(req, res);
+      res.status(STATUS_CODES.success).json(response);
+    } catch (error) {
+      respondWithError(res, error, STATUS_CODES.error);
     }
   }
 );
