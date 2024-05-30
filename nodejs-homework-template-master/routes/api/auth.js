@@ -119,7 +119,7 @@ router.get(
 
       res.status(STATUS_CODES.success).json({
         email: user.email,
-        role: user.role,
+        user: user.role,
       });
     } catch (error) {
       respondWithError(res, error, STATUS_CODES.error);
@@ -131,14 +131,18 @@ router.get(
 //! POST localhost:3000/api/auth/avatar/
 router.patch(
   "/avatar",
-  [AuthController.validateAuth, FileController.uploadFile],
-  async (req, res) => {
+  FileController.uploadFile,
+  async function (req, res, next) {
     try {
-      const response = await FileController.processAvatar(req, res);
-      res.status(STATUS_CODES.success).json(response);
+      res.status(STATUS_CODES.success).json({
+        avatarURL: req.file,
+      });
     } catch (error) {
       respondWithError(res, error, STATUS_CODES.error);
     }
+
+    //* req.file is the 'avatar' file.
+    //* req.body will hold the text field, if there werw any.
   }
 );
 
