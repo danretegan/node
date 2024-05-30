@@ -1,5 +1,6 @@
 import express from "express";
 import AuthController from "../../controller/authController.js";
+import FileController from "../../controller/fileController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
 import User from "../../models/user.js";
 import colors from "colors";
