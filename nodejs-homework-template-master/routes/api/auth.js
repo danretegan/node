@@ -12,6 +12,7 @@ const router = express.Router();
 //TODO Modificam login-ul sa verifice daca ceea ce introduce utilizatorul la logare corespunde cu cee ce este in baza de date:
 router.post("/login", async (req, res, next) => {
   try {
+    //* req.body va conține toate câmpurile de text:
     const isValid = checkLoginPayload(req.body);
     if (!isValid) {
       throw new Error("The login request is invalid.");
@@ -45,6 +46,7 @@ router.post("/login", async (req, res, next) => {
 //! POST localhost:3000/api/auth/signup/
 router.post("/signup", async (req, res, next) => {
   try {
+    //* req.body va conține toate câmpurile de text:
     const isValid = checkSignupPayload(req.body);
 
     if (!isValid) {

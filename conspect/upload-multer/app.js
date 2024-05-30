@@ -26,7 +26,10 @@ const upload = multer({
 app.use(express.static(path.join(__dirname, "public")));
 
 app.post("/upload", upload.single("picture"), async (req, res, next) => {
+  //* req.body va conține toate câmpurile de text:
   const { description } = req.body;
+
+  //* req.file este fișierul 'avatar':
   const { path: temporaryName, originalname } = req.file;
   const fileName = path.join(storeImage, originalname);
   try {
@@ -35,6 +38,7 @@ app.post("/upload", upload.single("picture"), async (req, res, next) => {
     await fs.unlink(temporaryName);
     return next(err);
   }
+
   //! Răspuns cu un mesaj de succes și un link către pagina de încărcare:
   res.send(`
     <h2>File successfully uploaded!</h2>

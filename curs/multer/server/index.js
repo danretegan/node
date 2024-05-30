@@ -22,9 +22,17 @@ app.post("/profile", function (req, res) {
     }
 
     res.status(303).send("Fisierul a fost incarcat!");
+    //* req.body va conține toate câmpurile de text:
     console.dir(req.body);
-    // I can save Avatar:req.file, Name: req.body.name, Email: req.body.email
-    // Everything went fine.
+
+    /**
+     //! Se poate salva: 
+     //* Avatar: req.file, 
+     //* Name: req.body.name, 
+     //* Email: req.body.email
+     
+    //* Everything went fine.
+     */
   });
 });
 

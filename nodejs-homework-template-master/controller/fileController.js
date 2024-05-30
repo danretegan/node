@@ -16,14 +16,15 @@ const uploadFile = multer({ storage: storage }).single("avatar");
 async function processAvatar(req, res) {
   //   console.dir(req);
   //   console.dir(res);
-  const userId = req.user.id; // Obține ID-ul utilizatorului (presupunând că ai middleware de autentificare)
+  const userId = req.user.id; //! Obține ID-ul utilizatorului (presupunând că ai middleware de autentificare)
 
   try {
-    // Procesează avatarul cu Jimp
+    //! Procesează avatarul cu Jimp:
+    //* req.file este fișierul 'avatar'.
     const avatar = await Jimp.read(req.file.path);
     avatar.resize(250, 250).quality(80).write(req.file.path);
 
-    // Mută avatarul în public/avatars
+    //! Mută avatarul în public/avatars:
     const newFilename = `${userId}_${Date.now()}${path.extname(
       req.file.originalname
     )}`;
