@@ -6,13 +6,6 @@ import User from "../models/user.js";
 import passport from "passport";
 import gravatar from "gravatar";
 
-const AuthController = {
-  login,
-  signup,
-  validateAuth,
-  getPayloadFromJWT,
-};
-
 const secretForToken = process.env.TOKEN_SECRET;
 
 async function login(data) {
@@ -68,7 +61,7 @@ async function signup(data) {
 }
 
 // TODO functia de verificare token, jwt.verify();
-export function validateJWT(token) {
+function validateJWT(token) {
   try {
     let isAuthenticated = false;
 
@@ -97,7 +90,7 @@ function getPayloadFromJWT(token) {
   }
 }
 
-export function validateAuth(req, res, next) {
+function validateAuth(req, res, next) {
   passport.authenticate("jwt", { session: false }, (err, user) => {
     if (!user || err) {
       return res.status(401).json({
@@ -111,5 +104,13 @@ export function validateAuth(req, res, next) {
     next();
   })(req, res, next);
 }
+
+const AuthController = {
+  login,
+  signup,
+  validateJWT,
+  getPayloadFromJWT,
+  validateAuth,
+};
 
 export default AuthController;
