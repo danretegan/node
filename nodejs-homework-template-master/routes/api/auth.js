@@ -131,18 +131,14 @@ router.get(
 //! POST localhost:3000/api/auth/avatar/
 router.patch(
   "/avatar",
-  FileController.uploadFile,
-  async function (req, res, next) {
+  [AuthController.validateAuth, FileController.uploadFile],
+  async (req, res) => {
     try {
-      res.status(STATUS_CODES.success).json({
-        avatarURL: req.file,
-      });
+      const response = await FileController.processAvatar(req, res);
+      res.status(STATUS_CODES.success).json(response);
     } catch (error) {
       respondWithError(res, error, STATUS_CODES.error);
     }
-
-    //* req.file is the 'avatar' file.
-    //* req.body will hold the text field, if there werw any.
   }
 );
 
