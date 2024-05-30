@@ -39,6 +39,7 @@ router.get("/:id", async (req, res, next) => {
 /* POST localhost:3000/api/products/ */
 router.post("/", async (req, res, next) => {
   try {
+    //* req.body va conține toate câmpurile de text:
     const isValid = checkIsProductValid(req.body);
     if (!isValid) {
       throw new Error("Produsul introdus nu are toate campurile necesare.");
