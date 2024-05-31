@@ -1,7 +1,7 @@
-import add from "./index.js";
+import CalculatorService from "./index.js";
 
 describe("Calculator", () => {
   it("adds up", () => {
-    expect(add(1, 2)).toBe(3);
+    expect(CalculatorService.add(1, 2)).toBe(3);
   });
 });

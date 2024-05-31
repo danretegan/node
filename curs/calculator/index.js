@@ -1,7 +1,7 @@
-const add = (a, b) => {
-  return a + b;
+const add = (a, b) => a + b;
+
+const CalculatorService = {
+  add: add,
 };
 
-console.log("2 + 3 =", add(2, 3)); //* Afișează 5
-
-export default add;
+export default CalculatorService;
