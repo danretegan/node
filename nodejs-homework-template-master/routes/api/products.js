@@ -1,8 +1,9 @@
 import express from "express";
+import AuthController from "../../controller/authController.js";
 import ProductsController from "../../controller/productsController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
+import { respondWithError } from "../../utils/respondWithError.js";
 import "../../passport.js";
-import AuthController from "../../controller/authController.js";
 
 const router = express.Router();
 
@@ -115,12 +116,4 @@ function checkIsProductValid(product) {
   }
 
   return true;
-}
-
-/**
- * Handles Error Cases
- */
-function respondWithError(res, error) {
-  console.error(error);
-  res.status(STATUS_CODES.error).json({ message: `${error}` });
 }
