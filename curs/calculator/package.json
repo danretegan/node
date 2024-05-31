@@ -25,9 +25,9 @@
   "contributors": [],
   "scripts": {
     "dev": "",
-    "test": ""
+    "test": "jest"
   },
-  "dependencies": {
+  "devDependencies": {
     "jest": "^29.7.0"
   }
 }
