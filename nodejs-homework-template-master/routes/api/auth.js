@@ -4,6 +4,7 @@ import FileController from "../../controller/fileController.js";
 import { STATUS_CODES } from "../../utils/constants.js";
 import User from "../../models/user.js";
 import colors from "colors";
+import { respondWithError } from "../../utils/respondWithError.js";
 
 const router = express.Router();
 
@@ -173,12 +174,4 @@ function checkSignupPayload(data) {
   }
 
   return true;
-}
-
-/**
- //! Handles Error Cases:
- */
-function respondWithError(res, error) {
-  console.error(error);
-  res.status(STATUS_CODES.error).json({ message: `${error}` });
 }
