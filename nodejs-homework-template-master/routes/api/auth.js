@@ -37,6 +37,11 @@ router.post("/login", async (req, res, next) => {
     res.status(STATUS_CODES.success).json({
       message: "Utilizatorul a fost logat cu succes!",
       token: token,
+      user: {
+        email: user.email,
+        role: user.role,
+        avatarURL: user.avatarURL,
+      },
     });
   } catch (error) {
     respondWithError(res, error, STATUS_CODES.error);
