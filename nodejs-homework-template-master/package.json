@@ -6,8 +6,13 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
     "start:dev": "cross-env NODE_ENV=development nodemon ./server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:dev": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
+  },
+  "jest": {
+    "transform": {}
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
