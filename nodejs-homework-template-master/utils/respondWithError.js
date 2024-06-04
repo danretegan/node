@@ -2,7 +2,7 @@
  //! Handles Error Cases:
  */
 
-import { STATUS_CODES } from "./constants";
+import { STATUS_CODES } from "./constants.js";
 
 export function respondWithError(res, error) {
   console.error(error);
