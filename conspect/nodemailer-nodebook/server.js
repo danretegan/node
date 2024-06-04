@@ -17,18 +17,18 @@ app.get("/", (req, res, next) => {
 app.post("/", (req, res, next) => {
   const { email, name, text } = req.body;
   const config = {
-    host: "smtp.meta.ua",
-    port: 465,
-    secure: true,
+    host: "smtp.office365.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: "goitnodejs@meta.ua",
-      pass: process.env.PASSWORD,
+      user: process.env.OUTLOOK_EMAIL,
+      pass: process.env.OUTLOOK_PASSWORD,
     },
   };
 
   const transporter = nodemailer.createTransport(config);
   const emailOptions = {
-    from: "goitnodejs@meta.ua",
+    from: process.env.OUTLOOK_EMAIL,
     to: email,
     subject: "Nodemailer test",
     text: `${text}, Expeditor: ${name}`,
