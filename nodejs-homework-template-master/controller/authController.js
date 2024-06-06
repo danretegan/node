@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import User from "../models/user.js";
 import passport from "passport";
 import gravatar from "gravatar";
+import { v4 as uuidv4 } from "uuid";
+import sendWithSendGrid from "../utils/sendEmail.js";
 
 const secretForToken = process.env.TOKEN_SECRET;
 
@@ -13,7 +15,14 @@ async function login(data) {
 
   const { email, password } = data;
 
-  const user = await User.findOne({ email });
+  //* Trebuie să se țină cont de faptul că utilizatorul nu va putea să se autentifice până când adresa lui de e-mail nu a fost verificată. Deci adaugam si 'verify: true':
+  const user = await User.findOne({ email: email, verify: true });
+
+  if (!user) {
+    throw new Error(
+      "The username does not exist or the email was not yet validated!"
+    );
+  }
 
   const isMatching = await bcrypt.compare(password, user.password);
 
@@ -33,7 +42,7 @@ async function login(data) {
 
     return token;
   } else {
-    throw new Error("Username is not matching!");
+    throw new Error("Email is not matching!");
   }
 }
 
@@ -43,19 +52,24 @@ async function signup(data) {
 
   const saltRounds = 10;
   const encryptedPassword = await bcrypt.hash(data.password, saltRounds);
-
-  //! Setez noua proprietate AVATAR:
   const userAvatar = gravatar.url(data.email);
+
+  //! implementez o functie care sa genereze un token:
+  const token = uuidv4();
 
   const newUser = new User({
     email: data.email,
     password: encryptedPassword,
     role: "buyer",
     token: null,
-
-    //! Adaug si setez URL-ul avatarului la valoarea generată:
     avatarURL: userAvatar,
+    //! Adaugam la noul user:
+    verificationToken: token,
+    verify: false,
   });
+
+  //! Apelez functia sendWithSendGrid():
+  sendWithSendGrid(data.email, token);
 
   return User.create(newUser);
 }
@@ -105,12 +119,35 @@ function validateAuth(req, res, next) {
   })(req, res, next);
 }
 
+async function getUserByValidationToken(token) {
+  const user = await User.findOne({
+    verificationToken: token,
+    verify: false,
+  });
+
+  if (user) {
+    return true;
+  }
+
+  return false;
+}
+
+async function updateToken(email, token) {
+  token = token || uuidv4();
+
+  await User.findOneAndUpdate({ email: email }, { verificationToken: token });
+
+  sendWithSendGrid(email, token);
+}
+
 const AuthController = {
   login,
   signup,
   validateJWT,
   getPayloadFromJWT,
   validateAuth,
+  getUserByValidationToken,
+  updateToken,
 };
 
 export default AuthController;
