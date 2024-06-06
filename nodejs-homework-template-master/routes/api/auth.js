@@ -182,6 +182,28 @@ router.get("/verify/:verificationToken", async (req, res) => {
   }
 });
 
+// TODO @ POST /verify/
+//! POST /api/auth/verify/
+//? /api/users/verify/
+router.post("/verify", async (req, res) => {
+  try {
+    const isValid = req.body?.email;
+    const email = req.body?.email;
+
+    if (isValid) {
+      AuthController.updateToken(email);
+
+      res.status(200).json({
+        message: "Verification email sent!",
+      });
+    } else {
+      throw new Error("The email field is required!");
+    }
+  } catch (error) {
+    respondWithError(res, error, STATUS_CODES.error);
+  }
+});
+
 export default router;
 
 /**

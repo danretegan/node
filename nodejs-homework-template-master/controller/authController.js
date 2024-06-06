@@ -132,6 +132,14 @@ async function getUserByValidationToken(token) {
   return false;
 }
 
+async function updateToken(email, token) {
+  token = token || uuidv4();
+
+  await User.findOneAndUpdate({ email: email }, { verificationToken: token });
+
+  sendWithSendGrid(email, token);
+}
+
 const AuthController = {
   login,
   signup,
@@ -139,6 +147,7 @@ const AuthController = {
   getPayloadFromJWT,
   validateAuth,
   getUserByValidationToken,
+  updateToken,
 };
 
 export default AuthController;
