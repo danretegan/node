@@ -11,7 +11,9 @@ export default async function sendWithSendGrid(email, token) {
     from: "danretegan@outlook.com",
     subject: "Hello from ProductApp!",
     text: "and easy to do anywhere, even with Node.js",
-    html: `Hello from <strong>ProductApp</strong>`,
+    html: `Hello from <strong>ProductApp</strong> <br/> 
+    <a href="localhost:3000/api/auth/verify/${token}">Click here</a> to validate your account. <br />
+    Or insert the link in the URL: localhost:3000/api/auth/verify/${token}`,
   };
 
   // ES6
