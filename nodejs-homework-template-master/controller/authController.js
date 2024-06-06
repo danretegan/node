@@ -105,12 +105,26 @@ function validateAuth(req, res, next) {
   })(req, res, next);
 }
 
+async function getUserByValidationToken(token) {
+  const user = await User.findOne({
+    verificationToken: token,
+    verify: false,
+  });
+
+  if (user) {
+    return true;
+  }
+
+  return false;
+}
+
 const AuthController = {
   login,
   signup,
   validateJWT,
   getPayloadFromJWT,
   validateAuth,
+  getUserByValidationToken,
 };
 
 export default AuthController;
