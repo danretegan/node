@@ -6,20 +6,25 @@ dotenv.config();
 export default async function sendWithSendGrid(email, token) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+  const host = process.env.HOSTNAME;
+  const verificationLink = `${host}/api/auth/verify/${token}`;
+
   const msg = {
     to: email,
-    from: "danretegan@outlook.com",
+    from: {
+      email: process.env.SEND_FROM_EMAIL,
+      name: "ProductApp",
+    },
     subject: "Hello from ProductApp!",
-    text: "and easy to do anywhere, even with Node.js",
-    html: `Hello from <strong>ProductApp</strong> <br/> 
-    <a href="localhost:3000/api/auth/verify/${token}">Click here</a> to validate your account. <br />
-    Or insert the link in the URL: localhost:3000/api/auth/verify/${token}`,
+    text: `Hello from ProductApp\n\nClick the link below to validate your account:\n\n${verificationLink}\n\nOr insert the link in the URL: ${verificationLink}`,
+    html: `Hello from <strong>ProductApp</strong> <br />
+      <a href="${verificationLink}">Click here</a> to validate your account. <br />
+      Or insert the link in the URL: ${verificationLink}`,
   };
 
-  // ES6
   try {
     await sgMail.send(msg);
-    console.log(`Email sent successfully to ${email}`);
+    console.log(`Email sent successfully to ${email} from ${msg.from.email}`);
   } catch (error) {
     if (error?.response) {
       console.error(error?.response.body);
