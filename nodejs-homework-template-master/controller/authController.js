@@ -6,6 +6,7 @@ import User from "../models/user.js";
 import passport from "passport";
 import gravatar from "gravatar";
 import { v4 as uuidv4 } from "uuid";
+import sendWithSendGrid from "../utils/sendEmail.js";
 
 const secretForToken = process.env.TOKEN_SECRET;
 
@@ -41,7 +42,7 @@ async function login(data) {
 
     return token;
   } else {
-    throw new Error("Username is not matching!");
+    throw new Error("Email is not matching!");
   }
 }
 
@@ -66,6 +67,9 @@ async function signup(data) {
     verificationToken: token,
     verify: false,
   });
+
+  //! Apelez functia sendWithSendGrid():
+  sendWithSendGrid(data.email, token);
 
   return User.create(newUser);
 }
